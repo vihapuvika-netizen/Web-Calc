@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Web Calculator</title>
+    <!-- Load Poppins Font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        /* Reset and General Body styling */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background: linear-gradient(135deg, #0d081b 0%, #06040a 100%);
+            color: #f5f5fa;
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* Container Card */
+        .calculator-container {
+            width: 100%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 0, 127, 0.15);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        /* Title section */
+        .title-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .main-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #ff007f, #00f0ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            color: #8a8a9e;
+            font-size: 1rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        /* Form styling */
+        .input-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        .input-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            color: #ff007f;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Number Inputs */
+        .number-input-wrapper {
+            display: flex;
+            align-items: center;
+            background-color: #ffffff;
+            border: 1px solid rgba(255, 0, 127, 0.4);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .number-input-wrapper:focus-within {
+            border-color: #00f0ff;
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+        }
+        .btn-step {
+            background-color: #f0f2f6;
+            color: #000000;
+            border: none;
+            width: 45px;
+            height: 45px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.2s ease;
+        }
+        .btn-step:hover {
+            background-color: #ff007f;
+            color: #ffffff;
+        }
+        input[type="number"] {
+            flex: 1;
+            border: none;
+            background: transparent;
+            color: #000000;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 10px;
+            text-align: center;
+            outline: none;
+            width: 100%;
+            -moz-appearance: textfield; /* Hide default spinner in Firefox */
+        }
+        /* Hide default spinner in Chrome, Safari, Edge */
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Select box */
+        select {
+            width: 100%;
+            background-color: #ffffff;
+            color: #000000;
+            border: 1px solid rgba(255, 0, 127, 0.4);
+            border-radius: 8px;
+            padding: 12px 15px;
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        select:focus {
+            border-color: #00f0ff;
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+        }
+
+        /* Result container styling */
+        .result-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(0, 240, 255, 0.25);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            margin-top: 35px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+        .result-label {
+            font-size: 0.9rem;
+            color: #ff007f;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .result-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #00f0ff;
+            text-shadow: 0 0 15px rgba(0, 240, 255, 0.6);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .input-row {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .calculator-container {
+                padding: 20px;
+            }
+            .main-title {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="calculator-container">
+        <!-- Header -->
+        <div class="title-container">
+            <h1 class="main-title">Modern Web Calculator</h1>
+            <p class="subtitle">HTML, CSS & JavaScript</p>
+        </div>
+
+        <!-- First & Second Number Inputs -->
+        <div class="input-row">
+            <div class="input-group">
+                <label for="num1">First Number</label>
+                <div class="number-input-wrapper">
+                    <button class="btn-step" type="button" onclick="stepDown('num1')">−</button>
+                    <input type="number" id="num1" value="0" step="1" oninput="calculate()">
+                    <button class="btn-step" type="button" onclick="stepUp('num1')">+</button>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="num2">Second Number</label>
+                <div class="number-input-wrapper">
+                    <button class="btn-step" type="button" onclick="stepDown('num2')">−</button>
+                    <input type="number" id="num2" value="0" step="1" oninput="calculate()">
+                    <button class="btn-step" type="button" onclick="stepUp('num2')">+</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Operation Selection -->
+        <div class="input-group" style="margin-bottom: 25px;">
+            <label for="operation">Choose Operation</label>
+            <select id="operation" onchange="calculate()">
+                <option value="add">Addition (+)</option>
+                <option value="subtract">Subtraction (-)</option>
+                <option value="multiply">Multiplication (*)</option>
+                <option value="divide">Division (/)</option>
+            </select>
+        </div>
+
+        <!-- Output Display -->
+        <div class="result-card">
+            <div class="result-label">Result</div>
+            <div class="result-value" id="result">0</div>
+        </div>
+    </div>
+
+    <script>
+        // Adjust the values using step buttons
+        function stepUp(id) {
+            const input = document.getElementById(id);
+            input.value = parseFloat(input.value || 0) + 1;
+            calculate();
+        }
+
+        function stepDown(id) {
+            const input = document.getElementById(id);
+            input.value = parseFloat(input.value || 0) - 1;
+            calculate();
+        }
+
+        // Calculation logic
+        function calculate() {
+            const num1 = parseFloat(document.getElementById('num1').value) || 0;
+            const num2 = parseFloat(document.getElementById('num2').value) || 0;
+            const operation = document.getElementById('operation').value;
+            const resultElement = document.getElementById('result');
+
+            let result = 0;
+
+            if (operation === 'add') {
+                result = num1 + num2;
+            } else if (operation === 'subtract') {
+                result = num1 - num2;
+            } else if (operation === 'multiply') {
+                result = num1 * num2;
+            } else if (operation === 'divide') {
+                if (num2 === 0) {
+                    resultElement.textContent = "Error: Div by 0";
+                    resultElement.style.fontSize = "1.8rem";
+                    return;
+                } else {
+                    result = num1 / num2;
+                }
+            }
+
+            // Restore normal font size for number results
+            resultElement.style.fontSize = "2.5rem";
+            
+            // Format result to avoid huge decimals like 0.1 + 0.2 = 0.30000000000000004
+            if (result % 1 !== 0) {
+                // Round to at most 6 decimal places if it is a decimal
+                resultElement.textContent = parseFloat(result.toFixed(6));
+            } else {
+                resultElement.textContent = result;
+            }
+        }
+
+        // Run calculation once on page load
+        window.onload = calculate;
+    </script>
+</body>
+</html>
