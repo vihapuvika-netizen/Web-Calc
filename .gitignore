@@ -1,0 +1,18 @@
+# Python bytecode files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Streamlit local configurations
+.streamlit/
+.streamlit/*.toml
+
+# PyInstaller build outputs
+build/
+dist/
+*.spec
+
+# Virtual environments
+venv/
+.venv/
+env/
